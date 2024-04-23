@@ -39,13 +39,21 @@ P-Mips é uma linguagem voltada para ajudar estudantes de arquitetura de computa
 
 Para mais informações de sintaxe, [clique aqui](assets/docs/P-Mips.md)
 
-## Como compilar 
+## Compile. Execute. Veja. Aprenda.
 
-Para compilar seus códigos em PMips usando o Commips, basta executar alguns comandos no terminal passando argumentos de acordo com sua preferência de input e output. No comando abaixo, executamos um código exemplo do Commips:
+Para compilar seus códigos de PMips para linguagem de instrução usando o Commips (use a flag `-H` ou `--HEXADECIMAL` para ter em formato hexadecimal), basta executar um comando no terminal passando argumentos de acordo com sua preferência de input e output. No comando abaixo, executamos um código exemplo do Commips:
 
-`python3 commips -H -i exemplos/exemplo.pmips -o output.txt`
+```bash
+python3 commips -i exemplos/exemplo.pmips -o output.txt
+```
 
-Para mais informações execute `python3 commips --help`
+Caso você queira executar seu código diretamente no nosso simulador, você pode utilizar a flag `-L` ou `--LINE-HEX` para compilar a linha inteira em hexadecimal.
+
+```bash
+python3 commips -L -i exemplos/exemplo_arquitetura.pmips -o output.txt
+```
+
+Para mais informações execute `python3 commips --help`.
 
 ## Diretrizes de Uso
 A equipe por trás deste projeto apoia o uso e desenvolvimento de ferramentas de software livre. Este projeto foi construído com o apoio de ferramentas de código aberto (e.g. Ubuntu e Chromium), sem eles, nada seria possivel, então é justo permitir que desenvolvedores e estudantes a utilizem livremente. O projeto segue uma diretriz de uso livre de atribuição ([CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)), o que significa que não há direitos autorais associados. Você pode utilizar e modificar nosso projeto como desejar, sem a necessidade de atribuição (embora ficaríamos muito felizes se você o fizesse, mas apenas se desejar).

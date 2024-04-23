@@ -202,7 +202,7 @@ def translate_conditional_jump(line: list) -> list:
     checking_syntax(line[6], "igual")
     checking_syntax(line[7], "zero")
 
-    return f"JZ {code[1]}, ${registers[0]}"
+    return f"JZ ${registers[0]} {code[1]}"
 
 
 def translate_jump(line: list) -> str:
@@ -285,6 +285,91 @@ def instruction_code_to_hex(code: list) -> list:
 
     return new_code
 
+def instruction_code_to_line_hex(code: list) -> list:
+
+    opcode = {
+        "ADD": 0,
+        "ADDI": 1,
+        "SUB": 0,
+        "SUBI": 1,
+        "MULT": 0,
+        "MULTI": 1,
+        "AND": 0,
+        "ANDI": 1,
+        "OR": 0,
+        "ORI": 1,
+        "NOR": 0,
+        "NORI": 1,
+        "XOR": 0,
+        "XORI": 1,
+        "LW": 2,
+        "LWI": 3,
+        "SW": 4,
+        "SWI": 5,
+        "JZ": 6,
+        "J": 7,
+    }
+
+    aluop = {
+        "ADD": 0,
+        "ADDI": 0,
+        "SUB": 1,
+        "SUBI": 1,
+        "MULT": 2,
+        "MULTI": 2,
+        "AND": 3,
+        "ANDI": 3,
+        "OR": 4,
+        "ORI": 4,
+        "NOR": 5,
+        "NORI": 5,
+        "XOR": 6,
+        "XORI": 6,
+        "JZ": 7,
+        "LW": 0,
+        "LWI": 0,
+        "SW": 0,
+        "SWI": 0,
+        "J": 0,
+    }
+
+    memory_address = 0
+
+    instruction_format = {
+        "instruction_bit_size": 32,
+        "opcode_bit_size": 3,
+        "register_bit_size": 5,
+        "immediate_bit_size": 16,
+        "aluop_bit_size": 3
+    }
+
+    registers = {}
+    new_code = []
+
+    for i, line in enumerate(code):
+        new_line = 0
+        line = line.split(" ")
+        if opcode.get(line[0], -1) == -1:
+            raise Exception(f'Erro na linha {i}: Comando "{line[0]}" não disponível na arquitetura') 
+        new_line += opcode[line[0]] ^ 2**(instruction_format["instruction_bit_size"] - instruction_format["opcode_bit_size"])
+        new_line += aluop[line[0]]
+        for j, word in enumerate(line[1:]):
+            if word:
+                if word[0] == '$':
+                    if word not in registers:
+                        registers[word] = memory_address
+                        memory_address += 1
+                    new_line += registers[word] * 2**(instruction_format["instruction_bit_size"] - instruction_format["opcode_bit_size"] - (instruction_format["register_bit_size"]*(j+1)))
+
+                elif word[0] == "#":
+                    new_line += int(word[1:].rsplit(",")[0]) * 2**(instruction_format["instruction_bit_size"] - instruction_format["opcode_bit_size"] - (instruction_format["register_bit_size"]*(j)) - instruction_format["immediate_bit_size"])
+
+
+        new_code.append(hex(new_line).split("0x")[-1])
+
+    return new_code
+
+
 
 def translate_to_instruction_code(high_level_code: list, HEX: bool = False) -> list:
 
@@ -338,9 +423,10 @@ def input_code() -> list:
     code = []
     line = ""
 
+    line = input()
     while line != "fim":
-        line = input()
         code.append(line)
+        line = input()
 
     return code
 
@@ -355,6 +441,11 @@ def main(args: list) -> None:
 
     if args.HEXADECIMAL:
         instruction_code = instruction_code_to_hex(instruction_code)
+
+    if args.LINE_HEX:
+        instruction_code = instruction_code_to_line_hex(instruction_code)
+
+
 
     if args.output:
         with open(args.output, "w") as file:

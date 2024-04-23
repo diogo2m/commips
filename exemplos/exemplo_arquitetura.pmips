@@ -1,0 +1,14 @@
+adicionar reg0 e 5 em reg1
+adicionar reg1 e 2 em reg2
+salvar reg2 em mem1
+adicionar reg0 e 1 em reg_verdade
+adicionar reg0 e 0 em reg_falso
+operar verdade e 1 em reg_e
+operar verdade ou falso em reg_ou
+operar verdade nor falso em reg_nor
+carregar mem1 em reg2
+multiplicar reg2 e reg_nor em reg3
+adicionar reg0 e 0 em endereco
+pular para linha endereco se reg3 igual zero
+
+
