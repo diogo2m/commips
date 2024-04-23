@@ -439,13 +439,11 @@ def main(args: list) -> None:
 
     instruction_code = translate_to_instruction_code(code)
 
-    if args.HEXADECIMAL:
-        instruction_code = instruction_code_to_hex(instruction_code)
-
     if args.LINE_HEX:
         instruction_code = instruction_code_to_line_hex(instruction_code)
-
-
+    
+    elif args.HEXADECIMAL:
+        instruction_code = instruction_code_to_hex(instruction_code)
 
     if args.output:
         with open(args.output, "w") as file:
