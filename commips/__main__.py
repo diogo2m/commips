@@ -378,6 +378,12 @@ if __name__ == "__main__":
         help="Compilar para código de máquina em hexadecimal",
     )
     args.add_argument(
+        "-L",
+        "--LINE-HEX",
+        action="store_true",
+        help="Compilar a linha de código para hexadecimal",
+    )
+    args.add_argument(
         "-i",
         "--input",
         help="O caminho para o arquivo com as instruções em alto nível.",
